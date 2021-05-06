@@ -2,7 +2,7 @@ import numpy as np
 
 
 def sigmoid(inputs):
-    return 1 / (1 + np.exp(inputs))
+    return 1 / (1 + np.exp(-inputs))
 
 
 def sigmoid_derivative(inputs):
