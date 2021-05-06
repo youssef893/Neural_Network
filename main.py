@@ -14,19 +14,34 @@ def getData(train_data, train_labels, test_data, test_labels):
     return train_data, train_labels, test_data, test_labels
 
 
+def calculate_accuracy(target, predictions):
+    class1 = []
+    for i in predictions:
+        if i > 0.5:
+            class1.append(1)
+        else:
+            class1.append(0)
+    counter = 0
+    for i in range(len(predictions)):
+        if class1[i] == test_labels[i]:
+            counter += 1
+    print(counter / len(predictions))
+
+
 def make_ANN(train_data, train_labels, test_labels):
     net = NeuralNetwork()
     net.add(FullyConnectedLayer(2, 3))
     net.add(ActivationLayer(sigmoid, sigmoid_derivative))
     net.add(FullyConnectedLayer(3, 3))
     net.add(ActivationLayer(sigmoid, sigmoid_derivative))
-    net.add(FullyConnectedLayer(3, 2))
+    net.add(FullyConnectedLayer(3, 1))
     net.add(ActivationLayer(sigmoid, sigmoid_derivative))
 
     net.loss_function(mse, mse_prime)
-    net.fit(train_data, train_labels, epochs=35, learning_rate=0.1)
+    net.fit(train_data, train_labels, epochs=100, learning_rate=0.1)
 
-    out = net.predict(train_data)
+    out = net.predict(test_data)
+    calculate_accuracy(test_labels, out)
     print("\n")
     print("predicted values : ", out)
 
